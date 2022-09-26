@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
+// import Notiflix from 'notiflix';
+
+import s from './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = { value: '' };
 
+  formSubmit = e => {
+    e.preventDefault();
+
+    this.props.onSubmit(this.state.value);
+    this.setState({ value: '' });
+  };
+
+  formChange = e => {
+    this.setState({ value: e.currentTarget.value });
+  };
+
   render() {
+    const { value } = this.state;
+    const { formSubmit, formChange } = this;
     return (
-      <form>
-        <input
-          placeholder="Search"
-          //  className={s.input}
-          type="text"
-          //  value={this.state.name}
-          name="search"
-          //  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          //  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-          //  onChange={this.handleChange}
-        />
-        <button>Search</button>
+      <form onSubmit={formSubmit} className={s.form}>
+        <div className={s.webflowstyleinput}>
+          <input
+            className={s.input}
+            placeholder="Let's find it!"
+            type="text"
+            value={value}
+            name="search"
+            autoFocus
+            autoComplete="off"
+            required
+            onChange={formChange}
+            width="300"
+          />
+          <button>Search</button>
+        </div>
       </form>
     );
   }
