@@ -1,3 +1,9 @@
+import SearchSection from './SearchSection';
+
 export const App = () => {
-  return <div></div>;
+  return (
+    <div>
+      <SearchSection />
+    </div>
+  );
 };
