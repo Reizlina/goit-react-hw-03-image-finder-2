@@ -25,5 +25,10 @@ const ImageGallery = props => {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
-  props: PropTypes.arrayOf(PropTypes.object),
+  props: PropTypes.objectOf(
+    PropTypes.shape({
+      pictures: PropTypes.array.isRequired,
+      onClick: PropTypes.func.isRequired,
+    })
+  ),
 };

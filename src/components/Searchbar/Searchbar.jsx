@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import Notiflix from 'notiflix';
+import PropTypes from 'prop-types';
 
 import s from './Searchbar.module.css';
 
@@ -8,7 +8,6 @@ class Searchbar extends Component {
 
   formSubmit = e => {
     e.preventDefault();
-
     this.props.onSubmit(this.state.value);
     this.setState({ value: '' });
   };
@@ -43,3 +42,11 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
+
+Searchbar.propTypes = {
+  props: PropTypes.objectOf(
+    PropTypes.shape({
+      onSubmit: PropTypes.func.isRequired,
+    })
+  ),
+};
