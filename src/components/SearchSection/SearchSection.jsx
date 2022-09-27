@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import ImageGallery from 'components/ImageGallery';
-import { getPosts } from '../Services/Api';
+import { getPosts } from '../../Services/Api';
 import Notiflix from 'notiflix';
 
 import Searchbar from 'components/Searchbar';
@@ -16,14 +16,17 @@ class SearchSection extends Component {
     page: 1,
     loading: false,
     error: null,
-    showModal: false,
+
     modalUrl: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
     const { page, value } = this.state;
+    // console.log('prevState.value', prevState.value);
+    // console.log('value :>> ', value);
 
-    if (page > prevState.page || value !== prevState.value) {
+    if (value !== prevState.value || page > prevState.page) {
+      // console.log('FETCH');
       this.fetchPosts();
     }
   }
@@ -36,7 +39,9 @@ class SearchSection extends Component {
     const { page, value } = this.state;
 
     try {
+      // console.log('value', value);
       const data = await getPosts(value, page);
+
       if (!data.hits.length) {
         return Notiflix.Notify.failure('Enter your search query');
       }
@@ -59,14 +64,12 @@ class SearchSection extends Component {
 
   openModal = largeImageURL => {
     this.setState(() => ({
-      showModal: true,
       modalUrl: largeImageURL,
     }));
   };
 
   closeModal = () => {
     this.setState(() => ({
-      showModal: false,
       modalUrl: '',
     }));
   };
@@ -76,11 +79,14 @@ class SearchSection extends Component {
   };
 
   onFormSubmit = value => {
+    if (value === this.state.value) {
+      return;
+    }
     this.setState({ value, pictures: [], page: 1 });
   };
 
   render() {
-    const { pictures, loading, error, showModal, modalUrl } = this.state;
+    const { pictures, loading, error, modalUrl } = this.state;
     const { onFormSubmit, openModal, closeModal, loadMore } = this;
     // console.log(pictures);
     return (
@@ -93,7 +99,7 @@ class SearchSection extends Component {
         {loading && <Loader />}
         {error && <h2>Oops, something went wrong...</h2>}
         {pictures.length > 0 && <Button onClick={loadMore} />}
-        {showModal && <Modal modalImg={modalUrl} onClose={closeModal} />}
+        {modalUrl && <Modal modalImg={modalUrl} onClose={closeModal} />}
       </>
     );
   }

@@ -27,7 +27,14 @@ export default ImageGallery;
 ImageGallery.propTypes = {
   props: PropTypes.objectOf(
     PropTypes.shape({
-      pictures: PropTypes.array.isRequired,
+      pictures: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          webformatURL: PropTypes.string.isRequired,
+          tags: PropTypes.string.isRequired,
+          largeImageURL: PropTypes.string.isRequired,
+        })
+      ).isRequired,
       onClick: PropTypes.func.isRequired,
     })
   ),
